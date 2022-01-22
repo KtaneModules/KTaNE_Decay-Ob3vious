@@ -46,13 +46,13 @@ public class decayScript : MonoBehaviour {
     //fraction system (to make the code look prettier)
     private struct Frac
     {
-        public Frac(int m, int n)
+        public Frac(long m, long n)
         {
             M = m;
             N = n;
         }
-        public int M { get; set; }
-        public int N { get; set; }
+        public long M { get; set; }
+        public long N { get; set; }
     }
 
     //logging
@@ -172,6 +172,17 @@ public class decayScript : MonoBehaviour {
             b = s;
         }
         return new int[] { a, b }.Max();
+    }
+
+    private long GreatestCommonDivisor(long a, long b)
+    {
+        while (a * b != 0)
+        {
+            long s = a % b;
+            a = b;
+            b = s;
+        }
+        return new long[] { a, b }.Max();
     }
 
     private int ReductiveModulo(int a, int b)
@@ -301,7 +312,7 @@ public class decayScript : MonoBehaviour {
 
     private List<int> ReductiveCascade(Frac frac)
     {
-        List<int> sequence = new List<int> { frac.N, frac.M };
+        List<int> sequence = new List<int> { (int)frac.N, (int)frac.M };
         while (!sequence.Contains(0))
             sequence.Add(ReductiveModulo(sequence[sequence.Count() - 2], sequence.Last()));
         return sequence;
@@ -342,7 +353,7 @@ public class decayScript : MonoBehaviour {
         List<int> sequence = new List<int> { };
         while (frac.N != 0)
         {
-            sequence.Add(frac.M / frac.N);
+            sequence.Add((int)(frac.M / frac.N));
             frac = new Frac(frac.N, frac.M % frac.N);
         }
         return sequence;
